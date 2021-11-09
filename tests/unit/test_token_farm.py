@@ -33,9 +33,6 @@ def test_stake_tokens(amount_staked):
     # Act
     # fau_token.balanceOf(account) == Web3.toWei(100, "ether")
     dapp_token.approve(token_farm.address, amount_staked, {"from": account})
-    # fau_token = get_contract("fau_token")
-    # tx = fau_token.transfer(account, amount_staked)
-    # tx.wait(1)
     token_farm.stakeTokens(amount_staked,
                            dapp_token.address, {"from": account})
     # Assert
@@ -54,12 +51,6 @@ def test_issue_tokens(amount_staked):
         pytest.skip("Only for local testing!")
     account = get_account()
     token_farm, dapp_token = test_stake_tokens(amount_staked)
-    # stakers = token_farm.stakers
-    # stakersIndex = 0
-    # for staker in range(stakers):
-    #     recipient = staker
-    #     userTotalValue = getUserTotalValue(recipient)
-    #     dappToken.transfer(recipient, userTotalValue)
     # send them a token reward
     # based on their total value locked
     # Act
@@ -71,3 +62,18 @@ def test_issue_tokens(amount_staked):
     # since the price of eth is $2,000
     assert dapp_token.balanceOf(
         account) == starting_balance + INITIAL_PRICE_FEED_VALUE
+
+
+def test_unstake_tokens(amount_staked):
+    # Arrange
+    if network.show_active() not in LOCAL_BLOCKCHAIN_ENVIRONMENTS:
+        pytest.skip("Only for local testing!")
+    account = get_account()
+    token_farm, dapp_token = test_stake_tokens(amount_staked)
+    # Act
+    token_farm.unstakeTokens(
+        dapp_token.address, {"from": account})
+    # Assert
+    assert token_farm.stakingBalance(
+        dapp_token.address, account.address) == 0
+    assert token_farm.uniqueTokensStaked(account.address) == 0
