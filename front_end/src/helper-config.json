@@ -1,0 +1,20 @@
+{
+  "42": "kovan",
+  "4": "rinkeby",
+  "1337": "dev",
+  "1": "mainnet",
+  "3": "ropsten",
+  "5": "goerli",
+  "56": "bsc",
+  "97": "bsctestnet",
+  "100": "xDai",
+  "137": "polygon",
+  "361": "theta",
+  "365": "thetatestnet",
+  "1285": "moonriver",
+  "80001": "mumbai",
+  "1666600000": "harmony",
+  "11297108109": "palm",
+  "31337": "hardhat",
+  "250": "fantom"
+}
