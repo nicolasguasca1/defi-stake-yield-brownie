@@ -24,8 +24,7 @@ const Main = () => {
   // Send our brownie config to the front-end
   const { chainId } = useEthers();
   const networkName = chainId ? helperConfig[chainId] : "dev";
-  console.log(chainId);
-  console.log(networkName);
+  let stringChainId = String(chainId);
   const dappTokenAddress = chainId
     ? networkMapping[String(chainId)]["DappToken"][0]
     : constants.AddressZero;
