@@ -8,6 +8,7 @@ import brownieConfig from "../brownie-config.json";
 import dapp from "../dapp.png";
 import eth from "../eth.png";
 import fau from "../dai.png";
+import { makeStyles } from "@material-ui/core/styles";
 
 import { YourWallet } from "./yourWallet";
 
@@ -17,11 +18,20 @@ export type Token = {
   name: string;
 };
 
+const useStyles = makeStyles((theme) => ({
+  title: {
+    color: theme.palette.common.white,
+    textAlign: "center",
+    padding: theme.spacing(4)
+  }
+}));
+
 const Main = () => {
   // Show token values
   // Get the address of different tokens
   // Get the balance of the users wallet
   // Send our brownie config to the front-end
+  const classes = useStyles();
   const { chainId } = useEthers();
   const networkName = chainId ? helperConfig[chainId] : "dev";
   let stringChainId = String(chainId);
@@ -51,7 +61,12 @@ const Main = () => {
       name: "DAI"
     }
   ];
-  return <YourWallet supportedTokens={supportedTokens} />;
+  return (
+    <>
+      <h2 className={classes.title}>LOMP Token App</h2>
+      <YourWallet supportedTokens={supportedTokens} />;
+    </>
+  );
 };
 
 export default Main;
