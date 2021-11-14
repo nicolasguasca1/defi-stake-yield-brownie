@@ -1,7 +1,7 @@
 import React from "react";
 import { DAppProvider, ChainId } from "@usedapp/core";
 import Header from "./components/Header";
-import { Container } from "@material-ui/core";
+import { Container, Typography } from "@material-ui/core";
 import Main from "./components/Main";
 
 function App() {
@@ -17,7 +17,14 @@ function App() {
     >
       <Header />
       <Container maxWidth="md">
-        <Main />
+        <Typography
+          color="textPrimary"
+          gutterBottom
+          variant="h6"
+          align="center"
+        >
+          <Main />
+        </Typography>
       </Container>
     </DAppProvider>
   );

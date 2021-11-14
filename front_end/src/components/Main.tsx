@@ -11,6 +11,7 @@ import fau from "../dai.png";
 import { makeStyles } from "@material-ui/core/styles";
 
 import { YourWallet } from "./yourWallet";
+import { TokenFarmPool } from "./tokenFarmPool";
 
 export type Token = {
   image: string;
@@ -64,7 +65,8 @@ const Main = () => {
   return (
     <>
       <h2 className={classes.title}>LOMP Token App</h2>
-      <YourWallet supportedTokens={supportedTokens} />;
+      <YourWallet supportedTokens={supportedTokens} />
+      <TokenFarmPool supportedTokens={supportedTokens} />
     </>
   );
 };
