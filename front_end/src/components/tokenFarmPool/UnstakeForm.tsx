@@ -7,11 +7,11 @@ import React, { useState, useEffect } from "react";
 import { useStakeTokens } from "../../hooks";
 import { utils } from "ethers";
 
-export interface StakeFormProps {
+export interface UnstakeFormProps {
   token: Token;
 }
 
-export const UnstakeForm = ({ token }: StakeFormProps) => {
+export const UnstakeForm = ({ token }: UnstakeFormProps) => {
   const { address: tokenAddress, name } = token;
   const { account } = useEthers();
   const tokenBalance = useTokenBalance(tokenAddress, account);
@@ -19,66 +19,57 @@ export const UnstakeForm = ({ token }: StakeFormProps) => {
     ? parseFloat(formatUnits(tokenBalance, 18))
     : 0;
   const { notifications } = useNotifications();
-  const [amount, setAmount] = useState<
-    number | string | Array<number> | string
-  >(0);
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const newAmount =
-      event.target.value === "" ? "" : Number(event.target.value);
-    setAmount(newAmount);
-    console.log(newAmount);
-  };
-  const { approveAndStake, state: approveAndStakeERC20State } =
-    useStakeTokens(tokenAddress);
+  // const [amount, setAmount] = useState<
+  //   number | string | Array<number> | string
+  // >(0);
+  const { Unstake, state: unstakeState } = useStakeTokens(tokenAddress);
 
-  const handleStakeSubmit = () => {
-    const amountAsWei = utils.parseEther(amount.toString());
-    return approveAndStake(amountAsWei as unknown as string);
+  const handleUnstakeSubmit = () => {
+    // const amountAsWei = utils.parseEther(amount.toString());
+    return Unstake();
   };
 
-  const isMining = approveAndStakeERC20State.status === "Mining";
-  const [showERC20ApprovalSuccess, setShowERC20ApprovalSuccess] =
-    useState(false);
-  const [showStakeTokenSuccess, setShowStakeTokenSuccess] = useState(false);
+  const isMining = unstakeState.status === "Mining";
+  const [showUnstakeSuccess, setShowUnstakeSuccess] = useState(false);
+  // const [showStakeTokenSuccess, setShowStakeTokenSuccess] = useState(false);
 
   const handleCloseSnack = () => {
-    setShowERC20ApprovalSuccess(false);
-    setShowStakeTokenSuccess(false);
+    setShowUnstakeSuccess(false);
+    // setShowStakeTokenSuccess(false);
   };
   useEffect(() => {
     if (
       notifications.filter(
         (notification) =>
           notification.type === "transactionSucceed" &&
-          notification.transactionName === "Approve ERC20 transfer"
+          notification.transactionName === "Unstake Tokens"
       ).length > 0
     ) {
-      setShowERC20ApprovalSuccess(true);
-      setShowStakeTokenSuccess(false);
+      setShowUnstakeSuccess(true);
+      // setShowStakeTokenSuccess(false);
     }
-    if (
-      notifications.filter(
-        (notification) =>
-          notification.type === "transactionSucceed" &&
-          notification.transactionName === "Stake Tokens"
-      ).length > 0
-    ) {
-      setShowERC20ApprovalSuccess(false);
-      setShowStakeTokenSuccess(true);
-    }
-  }, [notifications, showStakeTokenSuccess, showERC20ApprovalSuccess]);
+    // if (
+    //   notifications.filter(
+    //     (notification) =>
+    //       notification.type === "transactionSucceed" &&
+    //       notification.transactionName === "Stake Tokens"
+    //   ).length > 0
+    // ) {
+    //   setShowERC20ApprovalSuccess(false);
+    //   setShowStakeTokenSuccess(true);
+    // }
+  }, [notifications, showUnstakeSuccess]);
   return (
     <>
-      <Input onChange={handleInputChange} />
       <Button
         color="primary"
         size="large"
-        onClick={handleStakeSubmit}
+        onClick={handleUnstakeSubmit}
         disabled={isMining}
       >
-        {isMining ? <CircularProgress size={26} /> : "Stake"}
+        {isMining ? <CircularProgress size={26} /> : `Unstake all ${name}`}
       </Button>
-      <Snackbar
+      {/* <Snackbar
         open={showERC20ApprovalSuccess}
         autoHideDuration={5000}
         onClose={handleCloseSnack}
@@ -87,14 +78,14 @@ export const UnstakeForm = ({ token }: StakeFormProps) => {
           ERC-20 token transferapproved! Now approve the 2nd transaction
           please...
         </Alert>
-      </Snackbar>
+      </Snackbar> */}
       <Snackbar
-        open={showStakeTokenSuccess}
+        open={showUnstakeSuccess}
         autoHideDuration={5000}
         onClose={handleCloseSnack}
       >
         <Alert onClose={handleCloseSnack} severity="success">
-          Tokens Staked!
+          Tokens Unstaked!
         </Alert>
       </Snackbar>
     </>

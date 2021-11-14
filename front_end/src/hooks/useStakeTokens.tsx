@@ -56,5 +56,25 @@ export const useStakeTokens = (tokenAddress: string) => {
     }
   }, [approveAndStakeERC20State, stakeState]);
 
-  return { approveAndStake, state };
+  // unstake tokens
+  const { send: unstakeSend, state: unstakeState } = useContractFunction(
+    tokenFarmContract,
+    "unstakeTokens",
+    {
+      transactionName: "Unstake Tokens"
+    }
+  );
+
+  const Unstake = () => {
+    return unstakeSend(tokenFarmAddress);
+  };
+
+  // const [amountToUnstake, setAmountToUnstake] = useState("0");
+  useEffect(() => {
+    // setAmountToUnstake(amountToUnstake)
+    Unstake();
+    setState(unstakeState);
+  }, [unstakeState, approveAndStakeERC20State, tokenAddress]);
+
+  return { approveAndStake, state, Unstake };
 };
