@@ -66,15 +66,18 @@ export const useStakeTokens = (tokenAddress: string) => {
   );
 
   const Unstake = () => {
-    return unstakeSend(tokenFarmAddress);
+    return unstakeSend(tokenAddress);
   };
 
   // const [amountToUnstake, setAmountToUnstake] = useState("0");
   useEffect(() => {
+    if (unstakeState.status === "Success") {
+      setState(unstakeState);
+    }
     // setAmountToUnstake(amountToUnstake)
-    Unstake();
-    setState(unstakeState);
-  }, [unstakeState, approveAndStakeERC20State, tokenAddress]);
+    // Unstake();
+    // setState(unstakeState);
+  }, [unstakeState]);
 
   return { approveAndStake, state, Unstake };
 };

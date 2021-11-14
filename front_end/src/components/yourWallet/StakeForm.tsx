@@ -84,7 +84,7 @@ export const StakeForm = ({ token }: StakeFormProps) => {
         onClose={handleCloseSnack}
       >
         <Alert onClose={handleCloseSnack} severity="success">
-          ERC-20 token transferapproved! Now approve the 2nd transaction
+          ERC-20 token transfer approved! Now approve the 2nd transaction
           please...
         </Alert>
       </Snackbar>
