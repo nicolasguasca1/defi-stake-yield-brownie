@@ -34,7 +34,7 @@ export const UnstakeForm = ({ token }: UnstakeFormProps) => {
   // const [showStakeTokenSuccess, setShowStakeTokenSuccess] = useState(false);
 
   const handleCloseSnack = () => {
-    setShowUnstakeSuccess(false);
+    showUnstakeSuccess && setShowUnstakeSuccess(false);
     // setShowStakeTokenSuccess(false);
   };
   useEffect(() => {
@@ -45,7 +45,7 @@ export const UnstakeForm = ({ token }: UnstakeFormProps) => {
           notification.transactionName === "Unstake Tokens"
       ).length > 0
     ) {
-      setShowUnstakeSuccess(true);
+      !showUnstakeSuccess && setShowUnstakeSuccess(true);
       // setShowStakeTokenSuccess(false);
     }
     // if (

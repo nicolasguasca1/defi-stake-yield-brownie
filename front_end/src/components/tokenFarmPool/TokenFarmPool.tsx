@@ -4,6 +4,9 @@ import { Box, Tab, makeStyles } from "@material-ui/core";
 import { TabContext, TabList, TabPanel } from "@material-ui/lab";
 import { PoolBalance } from "./PoolBalance";
 import { UnstakeForm } from "./UnstakeForm";
+import { useEthers } from "@usedapp/core";
+import networkMapping from "../../chain-info/deployments/map.json";
+import { constants, utils } from "ethers";
 
 interface PoolProps {
   supportedTokens: Array<Token>;
@@ -26,6 +29,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export const TokenFarmPool = ({ supportedTokens }: PoolProps) => {
+  const { chainId } = useEthers();
+
+  const tokenFarmAddress = chainId
+    ? networkMapping[String(chainId)]["TokenFarm"][0]
+    : constants.AddressZero;
   const [selectedTokenIndex, setSelectedTokenIndex] = useState<number>(0);
   const classes = useStyles();
 
